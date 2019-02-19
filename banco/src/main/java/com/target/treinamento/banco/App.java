@@ -1,6 +1,5 @@
 package com.target.treinamento.banco;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,45 +14,30 @@ public class App
 {
     public static void main( String[] args )
     {
-    	Connection connection = null;
+    	FabricaDeConexao fabricaDeConexao = new FabricaDeConexao();
     	
         try 
         {
-        	Class.forName("org.postgresql.Driver");
-        	
-        	//Criação da conexão com o banco de dados
-			 connection = DriverManager.getConnection("jdbc:postgresql://ec2-23-21-128-35.compute-1.amazonaws.com:5432/d5k5g3oob6tn20", 
-																			"kxwedtxgcfjgvt", 
-																			"218b0dd9927d70d198d3f587b28ad32c6dd9cd00ac1c5d33803b8bc982f819e2"); //banco
-			
-			
-			System.out.println("Java Connection JDBC." + connection.toString());
-			
-			String sql = "insert into pessoas(PRIMEIRO_NOME,SEGUNDO_NOME, ENDERECO, CIDADE) "
+        	String sql = "insert into pessoas(PRIMEIRO_NOME,SEGUNDO_NOME, ENDERECO, CIDADE) "
 					+ "VALUES (?, ?, ?, ?)";
-			PreparedStatement statement = connection.prepareStatement(sql);
+        					// 1, 2, 3, 3
+			PreparedStatement statement = fabricaDeConexao.getPreparedStatement(sql);
 			statement.setString(1, "Pedrinho");
 			statement.setString(2, "Alfredo");
 			statement.setString(3, "Rua Bento rosa");
 			statement.setString(4, "Lajeado");
 			int retorno = statement.executeUpdate();
 			
-			if(retorno == 1) 
-			{
+			if(retorno == 1) {
 				System.out.println("Sucesso!");
-			} 
-			
-			else 
-			{
+			} else {
 				System.out.println("Erro ao gravar dados!");
 			}
 			
-			statement.close();
-			
-			ResultSet resultSet = connection.createStatement().executeQuery(
+			ResultSet resultSet = fabricaDeConexao.getPreparedStatement(
 					"SELECT P.ID, P.PRIMEIRO_NOME, "
 					+ "P.SEGUNDO_NOME, P.ENDERECO, P.CIDADE "
-					+ "FROM PESSOAS P");
+					+ "FROM PESSOAS P").executeQuery();
 			
 			while(resultSet.next()) 
 			{
@@ -70,16 +54,8 @@ public class App
 				System.out.println(cidade);
 				System.out.println("####################################");
 			}
-		} 
-        
-        catch (SQLException e) 
-        {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-        
-        catch (ClassNotFoundException e) 
-        {
+			
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
@@ -87,20 +63,7 @@ public class App
         //Bloco que sempre será executado, independente de exception ou não.
         finally 
         {
-			if(connection != null) 
-			{
-				try 
-				{
-					connection.close();
-					System.out.println("Fechando a conexão");
-				} 
-				
-				catch (SQLException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+        	fabricaDeConexao.fecharConexao();
 		}
         		
     }
