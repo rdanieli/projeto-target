@@ -20,7 +20,7 @@ public class App
         {
         	String sql = "insert into pessoas(PRIMEIRO_NOME,SEGUNDO_NOME, ENDERECO, CIDADE) "
 					+ "VALUES (?, ?, ?, ?)";
-        					// 1, 2, 3, 3
+        					// 1, 2, 3, 4
 			PreparedStatement statement = fabricaDeConexao.getPreparedStatement(sql);
 			statement.setString(1, "Pedrinho");
 			statement.setString(2, "Alfredo");
