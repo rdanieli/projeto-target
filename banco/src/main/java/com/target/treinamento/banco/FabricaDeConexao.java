@@ -11,6 +11,7 @@ public class FabricaDeConexao {
 	private static final String USER = "kxwedtxgcfjgvt";
 	private static final String PWD = "218b0dd9927d70d198d3f587b28ad32c6dd9cd00ac1c5d33803b8bc982f819e2";
 	
+	private LogManager logManager;
 	
 	private Connection connection = null;
 	
@@ -22,7 +23,7 @@ public class FabricaDeConexao {
 			connection = DriverManager.getConnection(URL, USER, PWD);
 			
 			
-			System.out.println("Java Connection JDBC." + connection.toString());
+			logManager.logarMensagem("Java Connection JDBC." + connection.toString());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,4 +57,11 @@ public class FabricaDeConexao {
 			e.printStackTrace();
 		}
 	}
+
+	public void setLogManager(LogManager logManager) {
+		this.logManager = logManager;
+	}
+
+	
+	
 }
