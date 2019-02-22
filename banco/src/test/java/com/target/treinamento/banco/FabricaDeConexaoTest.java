@@ -1,8 +1,13 @@
 package com.target.treinamento.banco;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -24,37 +29,62 @@ public class FabricaDeConexaoTest {
 		System.out.println("Testando o before");
 	}
 	
+	static FabricaDeConexao fabricaDeConexao;
+	
 	@BeforeClass
 	public static void testandoBeforeClass() {
-		System.out.println("Testando o before class");		
+		 fabricaDeConexao = new FabricaDeConexao();
 	}
 		
 	@Test
 	public void testaSeAConexaoFoiCriada() {
-		FabricaDeConexao fabricaDeConexao = new FabricaDeConexao();
 		
 		fabricaDeConexao.setLogManager(logManager);
 				
-		assertNotNull(fabricaDeConexao.getConexao());
+		assertNotNull(fabricaDeConexao.abreConexao());
 		
-		fabricaDeConexao.fecharConexao();
+		
 	}
 	
 	@Test
 	public void testaSeAConexaoFoiCriadaSemLogManager() {
-		FabricaDeConexao fabricaDeConexao = null;
+		
 		try {
-			fabricaDeConexao = new FabricaDeConexao();
+			fabricaDeConexao.setLogManager(null);
 			
-			fabricaDeConexao.getConexao();
+			fabricaDeConexao.abreConexao();
 			
 			fail();
 		}catch(NullPointerException e) {
 			assertTrue(true);
-		} finally {
-			fabricaDeConexao.fecharConexao();
+		} 
+	}
+	
+	@Test
+	public void testPreparedStatementEstaFuncionando() {
+		fabricaDeConexao.setLogManager(logManager);
+		fabricaDeConexao.abreConexao();
+		
+		PreparedStatement ps = fabricaDeConexao.getPreparedStatement("SELECT P.PRIMEIRO_NOME FROM PESSOAS P");
+		
+		try {
+			ResultSet resultSet = ps.executeQuery();
+			
+			assertEquals(resultSet.next(), true);
+			
+			System.out.println(resultSet.getString(1));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
+	
+	@Test
+	public void testaConexaoNaoCriadaAoFecharConexao() {
+		new FabricaDeConexao().fecharConexao();
+		assertTrue(true);
+	}
+	
 	
 	@After
 	public void testandoAfter() {
@@ -63,6 +93,6 @@ public class FabricaDeConexaoTest {
 	
 	@AfterClass
 	public static void testandoAfterClass() {
-		System.out.println("testando after class");
+		fabricaDeConexao.fecharConexao();
 	}
 }

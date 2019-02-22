@@ -15,7 +15,7 @@ public class FabricaDeConexao {
 	
 	private Connection connection = null;
 	
-	public Connection getConexao() {
+	public Connection abreConexao() {
 		try {
 			Class.forName("org.postgresql.Driver");
 			
