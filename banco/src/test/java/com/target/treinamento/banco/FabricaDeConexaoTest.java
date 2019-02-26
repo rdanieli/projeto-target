@@ -47,20 +47,6 @@ public class FabricaDeConexaoTest {
 	}
 	
 	@Test
-	public void testaSeAConexaoFoiCriadaSemLogManager() {
-		
-		try {
-			fabricaDeConexao.setLogManager(null);
-			
-			fabricaDeConexao.abreConexao();
-			
-			fail();
-		}catch(NullPointerException e) {
-			assertTrue(true);
-		} 
-	}
-	
-	@Test
 	public void testPreparedStatementEstaFuncionando() {
 		fabricaDeConexao.setLogManager(logManager);
 		fabricaDeConexao.abreConexao();

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+   <persistence-unit name="testBanco" transaction-type="RESOURCE_LOCAL">
+      
+      <class>com.target.treinamento.banco.dominio.Funcionario</class>
+      
+      <properties>
+      
+         <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+         
+         <property name="javax.persistence.jdbc.user" value="kxwedtxgcfjgvt"/>
+         
+         <property name="javax.persistence.jdbc.password" 
+         		   value="218b0dd9927d70d198d3f587b28ad32c6dd9cd00ac1c5d33803b8bc982f819e2"/>
+         
+         <property name="javax.persistence.jdbc.url" 
+         		   value="jdbc:postgresql://ec2-23-21-128-35.compute-1.amazonaws.com:5432/d5k5g3oob6tn20"/>
+         		   
+		 <property name="hibernate.show_sql" value="true"/>
+		 <property name="hibernate.format_sql" value="true"/>
+		 
+		 <property name="hibernate.hbm2dll.auto" value="update"/>
+		 <!-- update: faz update do schema  -->
+		 <!-- validate: valida se existem mudanças, mas não aplica nada. -->
+		 <!-- create: Cria o scheuma, destroi os dados anteriores. -->
+		 <!-- create-drop: drop o schema quando a sessão terminad -->
+		 
+		 
+		 
+      </properties>
+      
+   </persistence-unit>
+</persistence>
